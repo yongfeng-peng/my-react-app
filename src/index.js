@@ -1,264 +1,210 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 
-// class Square extends React.Component {
-//   // 在 JavaScript class 中，每次你定义其子类的构造函数时，都需要调用 super 方法。
-//   // 在所有含有构造函数的的 React 组件中，构造函数必须以 super(props) 开头。
-//   // constructor(props) {
-//   //   super(props);
-//   //   this.state = {
-//   //     value: null,
-      
-//   //   };
-//   // }
-//   // onClick={() => { this.setState({value: 'X'}) }}
-//   // 在 React 中，有一个命名规范，通常会将代表事件的监听 prop 命名为 on[Event]，将处理事件的监听方法命名为 handle[Event] 这样的格式。
-//   render() {
-//     return (
-//       <button 
-//         className="square"
-//         onClick={() => { this.props.onClick() }}
-//       >
-//         {/* TODO */}
-//         { this.props.value }
-//       </button>
-//     );
-//   }
+const name = 'Shero';
+// const element = <h1>Hello, {name}</h1>;
+
+const user = {
+  firstName: 'Harper',
+  lastName: 'Perez'
+};
+
+const element = (
+  // 建议将内容包裹在括号中，虽然这样做不是强制要求的，但是这可以避免遇到自动插入分号陷阱
+  <div>
+    <h1>Hello, {name}</h1>
+    <h1>Hello, {formatName(user)}</h1>
+    <h1>{getGreeting()}</h1>
+  </div>
+);
+
+
+function formatName(user) {
+  return `${user.firstName}-----${user.lastName}`
+}
+
+function getGreeting(user) {
+  if (user) {
+    return <h1>Hello, {formatName(user)}!</h1>;
+  }
+  return <h1>Hello, Stranger.</h1>;
+}
+
+// ReactDOM.render(
+//   element,
+//   document.getElementById('root')
+// );
+
+// function tick() {
+//   const element = (
+//     <div>
+//       <h1>Hello, world!</h1>
+//       <h2>It is {new Date().toLocaleTimeString()}.</h2>
+//     </div>
+//   );
+//   ReactDOM.render(element, document.getElementById('root'));
 // }
 
-// 函数组件: 如果组件只包含一个 render 方法，并且不包含 state
-function Square(props) {
+// setInterval(tick, 1000);
+
+// function Welcome(props) {
+//   return <h1>hello, {props.name}</h1>;
+// }
+
+// function App() {
+//   return (
+//     <div>
+//     <Welcome name="Sara" />
+//     <Welcome name="Dedi" />
+//     <Welcome name="Asli" />
+//     </div>
+//   );
+// }
+
+// ReactDOM.render(
+//   <App/>,
+//   document.getElementById('root')
+// );
+
+function formatDate(date) {
+  return date.toLocaleDateString();
+}
+
+// 从组件自身的角度命名 props，而不是依赖于调用组件的上下文命名
+function Avatar(props) {
   return (
-    <button className="square" onClick={ props.onClick }>
-      { props.value }
-    </button>
+    <img
+      className="Avatar"
+      src={props.user.avatarUrl}
+      alt={props.user.name}
+    />
   );
 }
 
-// class Board extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       squares: Array(9).fill(null),
-//       xIsNext: true,
-//     };
-//   }
-//   handClick(i) {
-//     console.log(this.state.squares);
-//     // slice() 方法返回一个新的数组对象，这一对象是一个由 begin 和 end 决定的原数组的浅拷贝（包括 begin，不包括end）。原始数组不会被改变。
-//     // const squares = this.state.squares.slice();
-//     // squares[i] = this.state.xIsNext ? 'X' : 'O';
-//     // this.setState({
-//     //   squares: squares,
-//     //   xIsNext: !this.state.xIsNext
-//     // })
-//     const squares = this.state.squares.slice();
-//     if (calculateWinner(squares) || squares[i]) {
-//       return;
-//     }
-//     squares[i] = this.state.xIsNext ? 'X' : 'O';
-//     this.setState({
-//       squares: squares,
-//       xIsNext: !this.state.xIsNext,
-//     });
-//   }
-//   renderSquare(i) {
-//     // 给子组件传递一个value值
-//     return (
-//       <Square 
-//         value={this.state.squares[i]}
-//         onClick={() => this.handClick(i)}
-//       />
-//     );
-//     // 为了提高可读性，我们把返回的 React 元素拆分成了多行，同时在最外层加了小括号，
-//     // 这样 JavaScript 解析的时候就不会在 return 的后面自动插入一个分号从而破坏代码结构了。
-//   }
-
-//   render() {
-//     // const status = `Next player: (${this.state.xIsNext ? 'X' : 'O'})`;
-//     const winner = calculateWinner(this.state.squares);
-//     let status;
-//     if (winner) {
-//       status = 'Winner: ' + winner;
-//     } else {
-//       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-//     }
-//     return (
-//       <div>
-//         <div className="status">{status}</div>
-//         <div className="board-row">
-//           {this.renderSquare(0)}
-//           {this.renderSquare(1)}
-//           {this.renderSquare(2)}
-//         </div>
-//         <div className="board-row">
-//           {this.renderSquare(3)}
-//           {this.renderSquare(4)}
-//           {this.renderSquare(5)}
-//         </div>
-//         <div className="board-row">
-//           {this.renderSquare(6)}
-//           {this.renderSquare(7)}
-//           {this.renderSquare(8)}
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-
-class Board extends React.Component {
-  // handleClick(i) {
-  //   const squares = this.state.squares.slice();
-  //   if (calculateWinner(squares) || squares[i]) {
-  //     return;
-  //   }
-  //   squares[i] = this.state.xIsNext ? 'X' : 'O';
-  //   this.setState({
-  //     squares: squares,
-  //     xIsNext: !this.state.xIsNext,
-  //   });
-  // }
-
-  renderSquare(i) {
-    return (
-      <Square
-        value={this.props.squares[i]}
-        onClick={() => this.props.onClick(i)}
-      />
-    );
-  }
-
-  render() {
-    // const winner = calculateWinner(this.state.squares);
-    // let status;
-    // if (winner) {
-    //   status = 'Winner: ' + winner;
-    // } else {
-    //   status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-    // }
-    return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+function UserInfo(props) {
+  return (
+    <div className="UserInfo">
+      <Avatar user={props.user} />
+      <div className="UserInfo-name">
+        {props.user.name}
       </div>
-    );
-  }
+    </div>
+  );
 }
 
-class Game extends React.Component {
+// 该组件由于嵌套的关系，变得难以维护，且很难复用它的各个部分。因此，让我们从中提取一些组件出来
+function Comment(props) {
+  return (
+    <div className="Comment">
+      <UserInfo user={props.author} />
+      <div className="Comment-text">{props.text}</div>
+      <div className="Comment-date">
+        {formatDate(props.date)}
+      </div>
+    </div>
+  );
+}
+
+const comment = {
+  date: new Date(),
+  text: 'I hope you enjoy learning React!',
+  author: {
+    name: 'Hello Kitty',
+    avatarUrl: 'https://placekitten.com/g/64/64',
+  },
+};
+// ReactDOM.render(
+//   <Comment
+//     date={comment.date}
+//     text={comment.text}
+//     author={comment.author}
+//   />,
+//   document.getElementById('root')
+// );
+
+function FormattedDate(props) {
+  return <h2>It is {props.date.toLocaleTimeString()}.</h2>;
+}
+
+// function Clock(props) {
+class Clock extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      history: [
-        {
-          squares: Array(9).fill(null)
-        }
-      ],
-      stepNumber: 0,
-      xIsNext: true
-    };
-  }
-  handleClick(i) {
-    const history = this.state.history.slice(0, this.state.stepNumber + 1);
-    const current = history[history.length - 1];
-    const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
-      return;
+      date: new Date
     }
-    squares[i] = this.state.xIsNext ? "X" : "O";
+  }
+
+  // 挂载 组件已经被渲染到 DOM 中后运
+  componentDidMount() {
+    this.timeId =  setInterval(
+      () => this.tick(),
+      1000
+    );
+  }
+
+  // 卸载
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  tick() {
     this.setState({
-      history: history.concat([
-        {
-          squares: squares
-        }
-      ]),
-      stepNumber: history.length,
-      xIsNext: !this.state.xIsNext
+      date: new Date()
     });
   }
-  jumpTo(step) {
-    this.setState({
-      stepNumber: step,
-      xIsNext: (step % 2) === 0,
-    });
-  }
+
   render() {
-    const history = this.state.history;
-    const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
-
-    const moves = history.map((step, move) => {
-      const desc = move ?
-        'Go to move #' + move :
-        'Go to game start';
-      return (
-        <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
-        </li>
-      );
-    });
-
-    let status;
-    if (winner) {
-      status = "Winner: " + winner;
-    } else {
-      status = "Next player: " + (this.state.xIsNext ? "X" : "O");
-    }
-
-    return (
-      <div className="game">
-        <div className="game-board">
-          <Board
-            squares={current.squares}
-            onClick={i => this.handleClick(i)}
-          />
-        </div>
-        <div className="game-info">
-          <div>{status}</div>
-          <ol>{moves}</ol>
-        </div>
+    return(
+      <div>
+        <h1>Hello, world!</h1>
+        {/* <h2>It is {this.state.date.toLocaleTimeString()}.</h2> */}
+        <FormattedDate date={this.state.date} />
       </div>
     );
   }
 }
 
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
+class Toggle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isToggleOn: true
+    };
+    // 为了在回调中使用 `this`，这个绑定是必不可少的
+    // this.handleClick = this.handleClick.bind(this);
   }
-  return null;
+  handleClick() {
+    this.setState(state => ({
+      isToggleOn: !state.isToggleOn
+    }));
+  }
+
+  render() {
+    return (
+      <button onClick={() => this.handleClick()}>
+        {this.state.isToggleOn ? 'ON' : 'OFF'}
+      </button>
+    );
+  }
+}
+function App() {
+  return (
+    <div>
+      <Clock />
+      <Clock />
+      <Clock />
+      <Toggle/>
+    </div>
+  );
 }
 
-// ========================================
+// 每个 Clock 组件都会单独设置它自己的计时器并且更新它。
+// 在 React 应用中，组件是有状态组件还是无状态组件属于组件实现的细节，它可能会随着时间的推移而改变。
 
 ReactDOM.render(
-  <Game />,
+  <App />,
   document.getElementById('root')
 );
+
+// setInterval(tick, 1000);
