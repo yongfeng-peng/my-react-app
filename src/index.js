@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './index.css';
 
 const name = 'Shero';
 // const element = <h1>Hello, {name}</h1>;
@@ -188,13 +189,528 @@ class Toggle extends React.Component {
     );
   }
 }
+
+class List extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    const  numbers = [1, 2, 3, 4, 5];
+    const listItems = numbers.map((number, index) =>
+      <li key={index}>{number}</li>
+    )
+    return(
+      <ul>{listItems}</ul>
+    );
+  }
+}
+
+function ListItems(props) {
+  return (
+    // <li key={props.number}>{props.number}</li> // 错误
+    <li>{props.number}</li>
+  );
+}
+
+function NumberList(props) {
+  const  numbers =  props.numbers;
+  const listItems = numbers.map(number =>
+    <ListItems key={number} number={number} />
+    // <li key={number}>{number}</li>
+  )
+  return(
+    <ul>{listItems}</ul>
+  );
+}
+
+const numbers = [1, 2, 3, 4, 5];
+
+const posts = [
+  {id: 1, title: 'Hello World', content: 'Welcome to learning React!'},
+  {id: 2, title: 'Installation', content: 'You can install React from npm.'}
+];
+
+function Blog(props) {
+  const sidebar = (
+    <ul>
+      {
+        props.posts.map(item => 
+          <li key={item.id}>{item.title}</li>
+        )
+      }
+    </ul>
+  );
+  const content = props.posts.map(item => 
+    <div key={item.id}>
+      <h3>{item.title}</h3>
+      <p>{item.content}</p>
+    </div>
+  );
+  return(
+    <div>
+      {sidebar}
+      <hr />
+      {content}
+    </div>
+  );
+}
+
+// 受控组件
+class NameForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: ''
+    };
+    // this.handleChange = this.handleChange.bind(this); // 第一种绑定事件
+    // this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  handleChange(e) {
+    this.setState({
+      value: e.target.value
+    })
+  }
+  // handleSubmit(e) {
+  //   alert(`提交名字${this.state.value}`);
+  //   e.preventDefault();
+  // }
+  handleSubmit = (e) => { // 第二种绑定事件
+    alert(`提交名字${this.state.value}`);
+    e.preventDefault();
+  }
+  render() {
+    return(
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          名字：
+          <input type="text" value={this.state.value} onChange={(e) => this.handleChange(e)} />
+          {/*第三种绑定事件*/}
+        </label>
+        <input type="submit" value="提交" />
+      </form>
+    );
+  }
+}
+
+// textarea
+
+class EssayForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: '请撰写一篇关于你喜欢的 DOM 元素的文章.'
+    };
+  }
+  handleChange(e) {
+    this.setState({
+      value: e.target.value
+    })
+  }
+  handleSubmit(e) {
+    alert(`提交名字${this.state.value}`);
+    e.preventDefault();
+  }
+  render() {
+    return(
+      <form onSubmit={(e) => this.handleSubmit(e)}>
+        <label>
+          文章：
+          <textarea value={this.state.value} onChange={(e) => this.handleChange(e)} />
+        </label>
+        <input type="submit" value="提交" />
+      </form>
+    );
+  }
+}
+
+class FlavorForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state ={
+      value: ''
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('你喜欢的风味是: ' + this.state.value);
+    event.preventDefault();
+  }
+  render() {
+    return(
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          选择你喜欢的风味:
+          <select value={this.state.value} onChange={this.handleChange}>
+            <option value="grapefruit">葡萄柚</option>
+            <option value="lime">酸橙</option>
+            <option value="coconut">椰子</option>
+            <option value="mango">芒果</option>
+          </select>
+        </label>
+        <input type="submit" value="提交" />
+      </form>
+    );
+  }
+}
+
+class Reservation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isGoing: true,
+      numberOfGuests: 2
+    };
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.name === 'isGoing' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value
+    });
+  }
+
+  render() {
+    return (
+      <form>
+        <label>
+          参与:
+          <input
+            name="isGoing"
+            type="checkbox"
+            checked={this.state.isGoing}
+            onChange={this.handleInputChange} />
+        </label>
+        <br />
+        <label>
+          来宾人数:
+          <input
+            name="numberOfGuests"
+            type="number"
+            value={this.state.numberOfGuests}
+            onChange={this.handleInputChange} />
+        </label>
+      </form>
+    );
+  }
+}
+
+// function BoilingVerdict(props) {
+//   if (props.celsius >= 100) {
+//     return <p>The water would boil.</p>;
+//   }
+//   return <p>The water would not boil.</p>;
+// }
+
+// class Calculator extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.handleChange = this.handleChange.bind(this);
+//     this.state = {temperature: ''};
+//   }
+
+//   handleChange(e) {
+//     this.setState({temperature: e.target.value});
+//   }
+
+//   render() {
+//     const temperature = this.state.temperature;
+//     return (
+//       <fieldset>
+//         <legend>Enter temperature in Celsius:</legend>
+//         <input
+//           value={temperature}
+//           onChange={this.handleChange} />
+//         <BoilingVerdict
+//           celsius={parseFloat(temperature)} />
+//       </fieldset>
+//     );
+//   }
+// }
+
+// const scaleNames = {
+//   c: 'Celsius',
+//   f: 'Fahrenheit'
+// };
+
+// function tryConvert(temperature, convert) {
+//   const input = parseFloat(temperature);
+//   if (Number.isNaN(input)) {
+//     return '';
+//   }
+//   const output = convert(input);
+//   const rounded = Math.round(output * 1000) / 1000;
+//   return rounded.toString();
+// }
+
+// class TemperatureInput extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.handleChange = this.handleChange.bind(this);
+//   }
+
+//   handleChange(e) {
+//     this.props.onTemperatureChange(e.target.value);
+//   }
+
+//   render() {
+//     const temperature = this.props.temperature;
+//     const scale = this.props.scale;
+//     return (
+//       <fieldset>
+//         <legend>Enter temperature in {scaleNames[scale]}:</legend>
+//         <input value={temperature}
+//           onChange={this.handleChange} />
+//       </fieldset>
+//     );
+//   }
+// }
+
+// class Calculator2 extends React.Component {
+//   render() {
+//     return (
+//       <div>
+//         <TemperatureInput scale="c" />
+//         <TemperatureInput scale="f" />
+//       </div>
+//     );
+//   }
+// }
+
+const scaleNames = {
+  c: 'Celsius',
+  f: 'Fahrenheit'
+};
+
+function toCelsius(fahrenheit) {
+  return (fahrenheit - 32) * 5 / 9;
+}
+
+function toFahrenheit(celsius) {
+  return (celsius * 9 / 5) + 32;
+}
+
+function tryConvert(temperature, convert) {
+  const input = parseFloat(temperature);
+  if (Number.isNaN(input)) {
+    return '';
+  }
+  const output = convert(input);
+  const rounded = Math.round(output * 1000) / 1000;
+  return rounded.toString();
+}
+
+function BoilingVerdict(props) {
+  if (props.celsius >= 100) {
+    return <p>The water would boil.</p>;
+  }
+  return <p>The water would not boil.</p>;
+}
+
+class TemperatureInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    this.props.onTemperatureChange(e.target.value);
+  }
+
+  render() {
+    const temperature = this.props.temperature;
+    const scale = this.props.scale;
+    return (
+      <fieldset>
+        <legend>Enter temperature in {scaleNames[scale]}:</legend>
+        <input value={temperature}
+          onChange={this.handleChange} />
+      </fieldset>
+    );
+  }
+}
+
+// 状态提升
+class Calculator extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
+    this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
+    this.state = {temperature: '', scale: 'c'};
+  }
+
+  handleCelsiusChange(temperature) {
+    this.setState({scale: 'c', temperature});
+  }
+
+  handleFahrenheitChange(temperature) {
+    this.setState({scale: 'f', temperature});
+  }
+
+  render() {
+    const scale = this.state.scale;
+    const temperature = this.state.temperature;
+    const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
+    const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
+
+    return (
+      <div>
+        <TemperatureInput
+          scale="c"
+          temperature={celsius}
+          onTemperatureChange={this.handleCelsiusChange} />
+        <TemperatureInput
+          scale="f"
+          temperature={fahrenheit}
+          onTemperatureChange={this.handleFahrenheitChange} />
+        <BoilingVerdict
+          celsius={parseFloat(celsius)} />
+      </div>
+    );
+  }
+}
+
+function FancyBorder(props) {
+  return (
+    <div className={'FancyBorder FancyBorder-' + props.color}>
+      {props.children}
+    </div>
+  );
+}
+
+// function WelcomeDialog() {
+//   return (
+//     <FancyBorder color="blue">
+//       <h1 className="Dialog-title">
+//         Welcome
+//       </h1>
+//       <p className="Dialog-message">
+//         Thank you for visiting our spacecraft!
+//       </p>
+//     </FancyBorder>
+//   );
+// }
+
+function Dialog(props) {
+  return (
+    <FancyBorder color="blue">
+      <h1 className="Dialog-title">
+        {props.title}
+      </h1>
+      <p className="Dialog-message">
+        {props.message}
+      </p>
+    </FancyBorder>
+  );
+}
+
+function WelcomeDialog() {
+  return (
+    <Dialog
+      title="Welcome"
+      message="Thank you for visiting our spacecraft!" />
+  );
+}
+
+function Contacts() {
+  return <div className="Contacts" />;
+}
+
+function Chat() {
+  return <div className="Chat" />;
+}
+
+function SplitPane(props) {
+  return (
+    <div className="SplitPane">
+      <div className="SplitPane-left">
+        {props.left}
+      </div>
+      <div className="SplitPane-right">
+        {props.right}
+      </div>
+    </div>
+  );
+}
+
+function Container() {
+  return (
+    <SplitPane
+      left={
+        <Contacts />
+      }
+      right={
+        <Chat />
+      } />
+  );
+}
+
+function Dialog1(props) {
+  return (
+    <FancyBorder color="blue">
+      <h1 className="Dialog-title">
+        {props.title}
+      </h1>
+      <p className="Dialog-message">
+        {props.message}
+      </p>
+      {props.children}
+    </FancyBorder>
+  );
+}
+
+class SignUpDialog extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSignUp = this.handleSignUp.bind(this);
+    this.state = {login: ''};
+  }
+  handleChange(e) {
+    this.setState({login: e.target.value});
+  }
+
+  handleSignUp() {
+    alert(`Welcome aboard, ${this.state.login}!`);
+  }
+  render() {
+    return (
+      <Dialog1 title="Mars Exploration Program"
+              message="How should we refer to you?">
+        <input value={this.state.login}
+          onChange={this.handleChange} />
+        <button onClick={this.handleSignUp}>
+          Sign Me Up!
+        </button>
+      </Dialog1>
+    );
+  }
+}
+
 function App() {
   return (
     <div>
+      {/*<Clock />
       <Clock />
       <Clock />
-      <Clock />
-      <Toggle/>
+      <Toggle />
+      <List />
+      <NumberList numbers= {numbers} />
+      <Blog posts={posts} />
+      <WelcomeDialog /> */}
+      <NameForm />
+      <EssayForm />
+      <FlavorForm />
+      <Reservation />
+      <Calculator />
+      <SignUpDialog />
     </div>
   );
 }
@@ -204,6 +720,7 @@ function App() {
 
 ReactDOM.render(
   <App />,
+  // <Container />,
   document.getElementById('root')
 );
 
